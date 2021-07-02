@@ -1,13 +1,17 @@
 # This is a course type
+# The ! means that we can't accept a course without these fields
 type Course {
-  _id: ID
-  title: String
+  _id: ID!
+  title: String!
   teacher: String
-  description: String
+  description: String!
   topic: String
 }
 # When we executed 'getCourses', this is going to gave us an array of course type
+# The ! means that the param is an obligatory one
 type Query {
   "Returns an array with all the courses"
   getCourses: [Course]
+  "Returns an specific course defining by the ID"
+  getCourse(id: ID!): Course
 }
