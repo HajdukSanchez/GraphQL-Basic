@@ -1,0 +1,13 @@
+# This is a course type
+type Course {
+  _id: ID
+  title: String
+  teacher: String
+  description: String
+  topic: String
+}
+# When we executed 'getCourses', this is going to gave us an array of course type
+type Query {
+  "Returns an array with all the courses"
+  getCourses: [Course]
+}

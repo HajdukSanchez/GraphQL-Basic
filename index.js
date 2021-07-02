@@ -1,30 +1,23 @@
 'use strict'
 
-//GraphQL
-const { graphql, buildSchema } = require('graphql')
+// GraphQL
+const { buildSchema } = require('graphql')
 // Express
 const express = require('express')
 const { graphqlHTTP } = require('express-graphql')
+// For reading Schema extern
+const { readFileSync } = require('fs')
+const { join } = require('path')
+// Resolvers
+const resolvers = require('./lib/resolvers')
 
 const app = express() // create the express system server
 const port = process.env.port || 3000 // Port for using our server
 
 // We define the schema
-const schema = buildSchema(`
-type Query {
-  hello: String
-  goodbye: String
-}`)
-
-// Configuration of the resolvers
-const resolvers = {
-  hello: () => {
-    return 'hello world'
-  },
-  goodbye: () => {
-    return 'Goodbye'
-  },
-}
+// Here we read a Schema from a extern context
+// The first parameter is what we are reading and the second one is the character encoding
+const schema = buildSchema(readFileSync(join(__dirname, 'lib', 'schema.graphql'), 'utf-8'))
 
 // The first parameter is a root route into our server
 app.use(
@@ -32,7 +25,7 @@ app.use(
   graphqlHTTP({
     schema: schema, // Schema to execute
     rootValue: resolvers, // Are the resolvers to execute?
-    graphiql: true, //The development environment
+    graphiql: true, // The development environment
   })
 )
 // we start the listener of the requires
