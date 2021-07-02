@@ -1,5 +1,8 @@
 'use strict'
 
+// ENV variables
+// If we do this, is going to see our environment variables and we can use them
+require('dotenv').config()
 // GraphQL
 const { makeExecutableSchema } = require('graphql-tools')
 // Express
