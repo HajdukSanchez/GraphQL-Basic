@@ -17,10 +17,24 @@ type Course {
   level: Level
 }
 
-type Student {
+interface Person {
   _id: ID!
   name: String!
   email: String!
+}
+
+type Student implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  avatar: String
+}
+
+type Monitor implements Person {
+  _id: ID!
+  name: String!
+  email: String!
+  phone: String
 }
 
 # When we executed 'getCourses', this is going to gave us an array of course type
@@ -30,10 +44,10 @@ type Query {
   getCourses: [Course]
   "Returns an specific course defining by the ID"
   getCourse(id: ID!): Course
-  "Returns an array with all the students"
-  getStudents: [Student]
-  "Returns an specific student defining by the ID"
-  getStudent(id: ID!): Student
+  "Returns an array with all the people"
+  getPeople: [Person]
+  "Returns an specific person defining by the ID"
+  getPerson(id: ID!): Person
 }
 
 # We define the type of CourseInput for tye Mutation
@@ -53,14 +67,18 @@ input CourseEditInput {
 }
 
 # We don't create the ID field because mongo created it for us
-input StudentInput {
+input PersonInput {
   name: String!
   email: String!
+  avatar: String
+  phone: String
 }
 
-input StudentEditInput {
+input PersonEditInput {
   name: String
   email: String
+  avatar: String
+  phone: String
 }
 
 # We define a mutation to insert data
@@ -70,10 +88,10 @@ type Mutation {
   createCourse(input: CourseInput!): Course
   "Edit a course"
   editCourse(_id: ID!, input: CourseEditInput): Course
-  "Create a student"
-  createStudent(input: StudentInput!): Student
-  "Edit a student"
-  editStudent(_id: ID!, input: StudentEditInput): Student
+  "Create a Person"
+  createPerson(input: PersonInput!): Person
+  "Edit a person"
+  editPerson(_id: ID!, input: PersonEditInput): Person
   "Add people to a course"
   addPeople(courseID: ID!, personID: ID!): Course
 }
