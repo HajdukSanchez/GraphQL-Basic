@@ -5,6 +5,9 @@ enum Level {
   advanced
 }
 
+# In this global search we are able to use these three types
+union GlobalSearch = Course | Student | Monitor
+
 # This is a course type
 # The ! means that we can't accept a course without these fields
 type Course {
@@ -12,7 +15,8 @@ type Course {
   title: String!
   teacher: String
   description: String!
-  topic: String
+  # The deprecated show into the GRAPHIQL that we are not going tp use this field more
+  topic: String @deprecated
   people: [Student]
   level: Level
 }
@@ -48,6 +52,8 @@ type Query {
   getPeople: [Person]
   "Returns an specific person defining by the ID"
   getPerson(id: ID!): Person
+  "Executed a global search"
+  searchItems(keyWord: String!): [GlobalSearch]
 }
 
 # We define the type of CourseInput for tye Mutation
