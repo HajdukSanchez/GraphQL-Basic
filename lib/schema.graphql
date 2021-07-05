@@ -15,3 +15,18 @@ type Query {
   "Returns an specific course defining by the ID"
   getCourse(id: ID!): Course
 }
+
+# We define the type of CourseInput for tye Mutation
+input CourseInput {
+  title: String!
+  teacher: String
+  description: String!
+  topic: String
+}
+
+# We define a mutation to insert data
+type Mutation {
+  "Create course"
+  # The last nam eis the return type
+  createCourse(input: CourseInput!): Course
+}
