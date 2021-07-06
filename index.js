@@ -7,6 +7,7 @@ require('dotenv').config()
 const { makeExecutableSchema } = require('graphql-tools')
 // Express
 const express = require('express')
+const cors = require('cors')
 const { graphqlHTTP } = require('express-graphql')
 // For reading Schema extern
 const { readFileSync } = require('fs')
@@ -17,6 +18,9 @@ const resolvers = require('./lib/resolvers')
 const app = express() // create the express system server
 const port = process.env.port || 3000 // Port for using our server
 
+// If production mode is true, then the GrapiQL is disabled, we change that parameter in Package.json 'START'
+const isDev = process.env.NODE_ENV.trimRight() !== 'production'
+
 // We define the schema
 // Here we read a Schema from a extern context
 // The first parameter is what we are reading and the second one is the character encoding
@@ -26,13 +30,16 @@ const schema = makeExecutableSchema({
   resolvers,
 })
 
+// Setup the middleware
+app.use(cors())
+
 // The first parameter is a root route into our server
 app.use(
   '/api',
   graphqlHTTP({
     schema: schema, // Schema to execute
     rootValue: resolvers, // Are the resolvers to execute?
-    graphiql: true, // The development environment
+    graphiql: isDev, // The development environment
   })
 )
 // we start the listener of the requires
